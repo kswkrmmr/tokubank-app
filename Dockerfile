@@ -3,6 +3,7 @@ FROM ruby:3.2
 WORKDIR /app
 
 ENV RAILS_ENV=production
+ENV SECRET_KEY_BASE=dummy
 
 RUN apt-get update -qq && apt-get install -y \
   build-essential \

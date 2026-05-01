@@ -4,4 +4,8 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:password_digest] }
   validates :name, presence: true, length: { maximum: 255 }
   validates :email, presence: true, uniqueness: true
+
+  def own?(object)
+    id == object&.user_id
+  end
 end

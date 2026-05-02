@@ -20,8 +20,8 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn build
 RUN bundle exec rails assets:clobber
+RUN yarn build
 RUN bundle exec rails assets:precompile
 
 EXPOSE 3000

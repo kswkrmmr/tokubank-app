@@ -15,6 +15,9 @@ RUN apt-get update -qq && apt-get install -y \
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+COPY package.json yarn.lock ./
+RUN yarn install
+
 COPY . .
 
 RUN yarn build

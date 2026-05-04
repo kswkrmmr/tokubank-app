@@ -1,0 +1,27 @@
+<%= render partial: 'shared/error_messages', locals: {object: @good_deed} %><div class="container">
+  <div class="row">
+    <div class=" col-md-10 col-lg-8 mx-auto">
+      <h1><%= t('good_deed.new.title') %></h1>
+
+      <%= form_with model: @good_deed do |f| %>
+        <div class="mb-3">
+          <%= f.label :content %>
+          <%= f.text_area :content, class: "form-control"  %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :performed_on %>
+          <%= f.date_field :performed_on, class: "form-control"  %>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :points%>
+          <%= f.number_field :points, class: "form-control"  %>
+        </div>
+        <div class='text-center'>
+          <%= f.submit "登録" , class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

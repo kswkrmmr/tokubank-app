@@ -17,6 +17,11 @@
           </li>
 
           <% if logged_in? %>
+
+            <li class="nav-item">
+              <%= link_to "徳を積む", good_deeds_new_path, class: "nav-link" %>
+            </li>
+
             <li class="nav-item">
               <%= link_to "ログアウト", logout_path, method: :delete, class: "nav-link", data: { turbo_method: :delete }  %>
             </li>

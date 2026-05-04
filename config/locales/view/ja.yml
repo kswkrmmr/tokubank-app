@@ -44,12 +44,10 @@ ja:
     create:
       success: ユーザー登録が完了しました
       failure: ユーザー登録に失敗しました
-  boards:
+  good_deed:
     new:
-      title: 掲示板作成
-    show:
-      title: 掲示板詳細
+      title: あなたの善行教えてください
     index:
-      title: 掲示板一覧
+      title: 徳を積む
     edit:
       title: 掲示板編集

@@ -5,6 +5,8 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
   validates :email, presence: true, uniqueness: true
 
+  has_many :good_deeds, dependent: :destroy
+  
   def own?(object)
     id == object&.user_id
   end

@@ -26,6 +26,8 @@ COPY . .
 # Build（ここが重要）
 RUN yarn build
 RUN yarn build:css
+RUN ls -la app/assets/builds
+RUN cat app/assets/builds/application.css || true
 RUN bundle exec rails assets:precompile
 
 EXPOSE 3000

@@ -25,8 +25,14 @@ COPY . .
 
 # Build（ここが重要）
 RUN yarn build
-# CSS build
+
+RUN echo "🔥 CSS BUILD START"
 RUN yarn build:css
+RUN echo "🔥 CSS BUILD END"
+
+RUN ls -la app/assets/builds || true
+RUN ls -la public || true
+
 
 # publicにコピー（重要）
 RUN mkdir -p public

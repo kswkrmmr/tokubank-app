@@ -23,20 +23,19 @@ RUN yarn install
 # App
 COPY . .
 
-RUN yarn install
-
+# CSS build（ここが最重要）
 RUN echo "🔥 START CSS BUILD"
 RUN yarn build:css
 RUN echo "🔥 END CSS BUILD"
+
+# publicにコピー（今回はこれでOK）
 RUN cp app/assets/builds/application.css public/application.css
 
-RUN ls -la app/assets/builds || true
-RUN cat app/assets/builds/application.css || true
-
-RUN bundle exec rails assets:precompile
+# 確認
+RUN ls -la public
+RUN head -n 20 public/application.css || true
 
 EXPOSE 3000
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
-
-#CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]
+# DB migrateもちゃんとやる
+CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]

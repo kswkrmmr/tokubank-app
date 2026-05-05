@@ -1,6 +1,14 @@
 class GoodDeedsController < ApplicationController
   before_action :require_login
 
+  def index
+    deeds = current_user.good_deeds
+
+    @good_deeds = deeds.order(performed_on: :desc)
+    @total_points = deeds.sum(:points)
+    @today_points = deeds.where(performed_on: Date.today).sum(:points)
+  end
+
   def new
     @good_deed = GoodDeed.new
   end

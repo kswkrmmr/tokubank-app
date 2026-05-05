@@ -1,0 +1,46 @@
+<% content_for(:title, t('good_deed.index.title')) %>
+<div class="container pt-3">
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <% if @good_deeds.present? %>
+                
+          <div class="row text-center mb-4">
+            <div class="col">
+              <div class="card shadow-sm p-3">
+                <h5>合計徳ポイント</h5>
+                <h2 class="text-success"><%= @total_points %> pt</h2>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card shadow-sm p-3">
+                <h5>今日の徳ポイント</h5>
+                <% if @today_points > 0 %>
+                  <p class="text-success">今日も徳を積んでいます 👍</p>
+                  <h2 class="text-success"><%= @today_points %> pt</h2>
+                <% else %>
+                  <p class="text-muted">今日はまだ徳を積んでいません</p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <% @good_deeds.each do |deed| %>    <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+              <div class="d-flex justify-content-between">
+                <strong><%= deed.content %></strong>
+                <span class="text-success"><%= deed.points %> pt</span>
+              </div>
+
+              <div class="text-muted small mt-2">
+                <%= deed.performed_on %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="mb-3">まだ徳を積んでいないようです</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

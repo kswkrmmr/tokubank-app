@@ -1,42 +1,34 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      
-      <%= link_to '/', class: 'navbar-brand' do %>
-        <%= image_tag 'logo.png', height: 60 %>
-      <% end %>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+    <%= link_to root_path, class: 'navbar-brand' do %>
+      <%= image_tag 'logo.png', height: 60 %>
+    <% end %>
 
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          
-          <li class="nav-item">
-            <%= link_to "Home", root_path, class: "nav-link" %>
-          </li>
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-          <% if logged_in? %>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto main-nav align-items-center">
+        <li class="nav-item">
+          <%= link_to " 徳を積む", new_good_deed_path, class: "btn btn-success" %>
+        </li>
 
-            <li class="nav-item">
-              <%= link_to "徳を積む", good_deeds_new_path, class: "nav-link" %>
-            </li>
+        <li class="nav-item">
+          <%= link_to "積み重ねた徳", good_deeds_path, class: "nav-link" %>
+        </li>
 
-            <li class="nav-item">
-              <%= link_to "ログアウト", logout_path, method: :delete, class: "nav-link", data: { turbo_method: :delete }  %>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to "ログイン", login_path, class: "nav-link" %>
-            </li>
-
-            <li class="nav-item">
-              <%= link_to "新規登録", new_user_path, class: "nav-link" %>
-            </li>
-          <% end %>
-
-        </ul>
-      </div>
+        <li class="nav-item">
+          <%= link_to "ログアウト", logout_path,
+              data: { turbo_method: :delete },
+              class: "nav-link" %>
+        </li>
+      </ul>
     </div>
   </nav>
 </header>

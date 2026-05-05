@@ -1,2 +1,8 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+body {
+  background: linear-gradient(to right, #f0fdf4, #ecfeff);
+  font-family: 'Noto Sans JP', sans-serif;
+  min-height: 100vh;
+}

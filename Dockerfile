@@ -29,6 +29,8 @@ RUN cp app/assets/builds/application.css public/application.css
 RUN ls -la public
 RUN head -n 20 public/application.css || true
 
+RUN bundle exec rails assets:precompile
+
 EXPOSE 3000
 
 CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]

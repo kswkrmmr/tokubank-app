@@ -12,21 +12,24 @@ RUN apt-get update -qq && apt-get install -y \
   npm && \
   npm install -g yarn
 
+# Gem
 COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
+# JS
 COPY package.json yarn.lock ./
 RUN yarn install
 
+# App
 COPY . .
 
-RUN bundle exec rails assets:clobber
-
-RUN yarn install
+# Build（ここが重要）
 RUN yarn build
-
+RUN yarn build:css
 RUN bundle exec rails assets:precompile
 
 EXPOSE 3000
 
-CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+
+#CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]

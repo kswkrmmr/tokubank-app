@@ -26,6 +26,10 @@ COPY . .
 # Build（ここが重要）
 RUN yarn build
 RUN yarn build:css
+RUN echo "=== builds check ==="
+RUN ls -la app/assets/builds
+RUN echo "=== css content ==="
+RUN cat app/assets/builds/application.css || echo "NO FILE"
 RUN cp app/assets/builds/application.css public/application.css
 RUN bundle exec rails assets:precompile
 

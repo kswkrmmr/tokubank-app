@@ -23,26 +23,16 @@ RUN yarn install
 # App
 COPY . .
 
-# Build（ここが重要）
-RUN yarn build
+RUN yarn install
 
-RUN echo "🔥 CSS BUILD START"
+RUN echo "🔥 START CSS BUILD"
 RUN yarn build:css
-RUN echo "🔥 CSS BUILD END"
+RUN echo "🔥 END CSS BUILD"
+RUN cp app/assets/builds/application.css public/application.css
 
 RUN ls -la app/assets/builds || true
-RUN ls -la public || true
+RUN cat app/assets/builds/application.css || true
 
-
-# publicにコピー（重要）
-RUN mkdir -p public
-RUN cp app/assets/builds/application.css public/application.css
-
-# 確認ログ
-RUN ls -la public
-RUN cat public/application.css | head -n 20
-
-RUN cp app/assets/builds/application.css public/application.css
 RUN bundle exec rails assets:precompile
 
 EXPOSE 3000

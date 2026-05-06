@@ -1,30 +1,36 @@
 <% content_for(:title, t('users.new.title')) %>
 <%= render partial: 'shared/error_messages', locals: {object: @user} %>
-<div class="container">
+<div class="container py-5">
   <div class="row">
-    <div class="col-md-10 col-lg-8 mx-auto">
-      <h1><%= I18n.t('users.new.title') %></h1>
-      <%= form_with model: @user, local: true do |f| %>
-        <div class="mb-3">
-          <%= f.label :name, class: "form-label" %>
-          <%= f.text_field :name, class: "form-control" %>
+    <div class="col-md-8 col-lg-5 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-body p-4">
+          <h1 class="card-title h4 mb-4 text-center"><%= I18n.t('users.new.title') %></h1>
+          <%= form_with model: @user, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :email, class: "form-label" %>
+              <%= f.email_field :email, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :password, class: "form-label" %>
+              <%= f.password_field :password, class: "form-control" %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :password_confirmation, class: "form-label" %>
+              <%= f.password_field :password_confirmation, class: "form-control" %>
+            </div>
+            <div class="d-grid mb-3">
+              <%= f.submit t('helpers.submit.create'), class: "btn btn-success" %>
+            </div>
+          <% end %>
+          <div class="text-center">
+            <%= link_to t('users.new.to_login_page'), login_path %>
+          </div>
         </div>
-        <div class="mb-3">
-          <%= f.label :email, class: "form-label" %>
-          <%= f.email_field :email, class: "form-control" %>
-        </div>
-        <div class="mb-3">
-          <%= f.label :password, class: "form-label" %>
-          <%= f.password_field :password, class: "form-control" %>
-        </div>
-        <div class="mb-3">
-          <%= f.label :password_confirmation, class: "form-label" %>
-          <%= f.password_field :password_confirmation, class: "form-control" %>
-        </div>
-        <%= f.submit t('helpers.submit.create'), class: "btn btn-primary" %>
-      <% end %>
-      <div class='text-center'>
-        <%= link_to t('users.new.to_login_page'), login_path %>
       </div>
     </div>
   </div>

@@ -1,24 +1,29 @@
-# README
+# 徳積み貯金
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![トップ画面](app/assets/images/back.png)
 
-Things you may want to cover:
+## 概要
+- 誰かのために行動をしてもお礼を言われることもない人のために、少しでも報われてほしいなと思い作りました。
+- 良いことをしたら徳を登録し、ポイントを貯めれます。
+- ポイントが貯まったら自分へのご褒美を叶えましょう。
 
-* Ruby version
+## できること（MVP）
+- ユーザー登録・ログイン・ログアウト
+- 徳の記録
+- 徳の一覧表示（合計徳ポイント・今日の徳ポイントの表示）
+- 登録済み徳の削除
 
-* System dependencies
+## 技術スタック
+- Ruby, Ruby on Rails
+- PostgreSQL
+- Docker / Render
 
-* Configuration
+## 今後の改善ポイント
+- ご褒美登録
+- ご褒美一覧
+- ご褒美実行（徳ポイント消費）
+- Xへの投稿
+- 他ユーザーへの公開
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## 公開URL
+- https://tokubank.onrender.com/

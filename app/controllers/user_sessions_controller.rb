@@ -9,7 +9,7 @@ class UserSessionsController < ApplicationController
 
     if @user
       session[:user_id] = @user.id
-      redirect_to root_path, success: t('user_sessions.create.success')
+      redirect_to good_deeds_path, success: t('user_sessions.create.success')
     else
       flash.now[:danger] = t('user_sessions.create.failure')
       render :new, status: :unprocessable_entity

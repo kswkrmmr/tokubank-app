@@ -17,7 +17,6 @@
               <div class="card shadow-sm p-3">
                 <h5>今日の徳ポイント</h5>
                 <% if @today_points > 0 %>
-                  <p class="text-success">今日も徳を積んでいます 👍</p>
                   <h2 class="text-success"><%= @today_points %> pt</h2>
                 <% else %>
                   <p class="text-muted">今日はまだ徳を積んでいません</p>
@@ -25,18 +24,26 @@
               </div>
             </div>
           </div>
-          <% @good_deeds.each do |deed| %>    <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-              <div class="d-flex justify-content-between">
-                <strong><%= deed.content %></strong>
-                <span class="text-success"><%= deed.points %> pt</span>
-              </div>
+          <% @good_deeds.each do |deed| %>    
+            <div class="card mb-3 shadow-sm">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <strong><%= deed.content %></strong>
+                  <span class="text-success"><%= deed.points %> pt</span>
+                </div>
 
-              <div class="text-muted small mt-2">
-                <%= deed.performed_on %>
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <span class="text-muted small"><%= deed.performed_on %></span>
+                  <%= button_to "削除", good_deed_path(deed), method: :delete,
+                    data: { turbo_confirm: "削除しますか？" },
+                    class: "btn btn-danger btn-sm" %>
+                </div>
               </div>
             </div>
           <% end %>
+          <div class="d-flex justify-content-center mt-3">
+            <%= paginate @good_deeds %>
+          </div>
         <% else %>
           <div class="mb-3">まだ徳を積んでいないようです</div>
         <% end %>

@@ -4,7 +4,7 @@ class GoodDeedsController < ApplicationController
   def index
     deeds = current_user.good_deeds
 
-    @good_deeds = deeds.order(performed_on: :desc)
+    @good_deeds = deeds.order(performed_on: :desc).page(params[:page]).per(20)
     @total_points = deeds.sum(:points)
     @today_points = deeds.where(performed_on: Date.today).sum(:points)
   end
@@ -22,6 +22,12 @@ class GoodDeedsController < ApplicationController
       flash.now[:danger] = "登録に失敗しました"
       render :new, status: :unprocessable_entity
     end
+  end
+  
+  def destroy
+    @good_deed = GoodDeed.find(params[:id])
+    @good_deed.destroy
+    redirect_to good_deeds_path, status: :see_other, success: "削除しました"
   end
 
   private

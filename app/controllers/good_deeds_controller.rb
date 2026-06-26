@@ -1,6 +1,4 @@
 class GoodDeedsController < ApplicationController
-  before_action :require_login
-
   def index
     deeds = current_user.good_deeds
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>徳積み貯金</title>
+    <title><%= content_for?(:title) ? "#{yield(:title)} | 徳積み貯金" : "徳積み貯金" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
 

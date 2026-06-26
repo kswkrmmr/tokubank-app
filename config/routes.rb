@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "good_deeds/new"
-  get "good_deeds/create"
   root "static_pages#top"
   resources :users, only: %i[new create]
   resources :good_deeds, only: %i[new create index destroy]

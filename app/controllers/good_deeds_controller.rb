@@ -17,9 +17,9 @@ class GoodDeedsController < ApplicationController
     @good_deed = current_user.good_deeds.build(good_deed_params)
 
     if @good_deed.save
-      redirect_to root_path, success: "ありがとうございます！良い行いをしましたね。"
+      redirect_to root_path, success: t('good_deed.create.success')
     else
-      flash.now[:danger] = "登録に失敗しました"
+      flash.now[:danger] = t('good_deed.create.failure')
       render :new, status: :unprocessable_entity
     end
   end
@@ -27,11 +27,11 @@ class GoodDeedsController < ApplicationController
   def destroy
     @good_deed = GoodDeed.find(params[:id])
     unless current_user.own?(@good_deed)
-      redirect_to good_deeds_path, danger: "権限がありません"
+      redirect_to good_deeds_path, danger: t('good_deed.destroy.unauthorized')
       return
     end
     @good_deed.destroy
-    redirect_to good_deeds_path, status: :see_other, success: "削除しました"
+    redirect_to good_deeds_path, status: :see_other, success: t('good_deed.destroy.success')
   end
 
   private

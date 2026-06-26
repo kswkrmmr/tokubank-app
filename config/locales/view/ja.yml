@@ -51,3 +51,9 @@ ja:
       title: 徳を積む
     edit:
       title: 掲示板編集
+    create:
+      success: ありがとうございます！良い行いをしましたね。
+      failure: 登録に失敗しました
+    destroy:
+      success: 削除しました
+      unauthorized: 権限がありません

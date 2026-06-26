@@ -6,6 +6,7 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   has_many :good_deeds, dependent: :destroy
+  has_many :likes, dependent: :destroy
   
   def own?(object)
     id == object&.user_id

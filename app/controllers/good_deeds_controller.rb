@@ -26,6 +26,10 @@ class GoodDeedsController < ApplicationController
   
   def destroy
     @good_deed = GoodDeed.find(params[:id])
+    unless current_user.own?(@good_deed)
+      redirect_to good_deeds_path, danger: "権限がありません"
+      return
+    end
     @good_deed.destroy
     redirect_to good_deeds_path, status: :see_other, success: "削除しました"
   end

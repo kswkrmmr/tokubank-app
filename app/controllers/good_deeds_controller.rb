@@ -7,6 +7,14 @@ class GoodDeedsController < ApplicationController
     @today_points = deeds.where(performed_on: Date.today).sum(:points)
   end
 
+  def all
+    all_deeds = GoodDeed.all
+    @good_deeds = all_deeds.includes(:user, :likes).order(performed_on: :desc).page(params[:page]).per(20)
+    @total_points = all_deeds.sum(:points)
+    @today_points = all_deeds.where(performed_on: Date.today).sum(:points)
+    @user_likes = current_user.likes.where(good_deed_id: @good_deeds.map(&:id)).index_by(&:good_deed_id)
+  end
+
   def new
     @good_deed = GoodDeed.new
   end

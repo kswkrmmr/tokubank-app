@@ -7,7 +7,7 @@ class User < ApplicationRecord
 
   has_many :good_deeds, dependent: :destroy
   has_many :likes, dependent: :destroy
-  
+
   def own?(object)
     id == object&.user_id
   end

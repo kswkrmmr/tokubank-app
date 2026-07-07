@@ -1,0 +1,14 @@
+<span id="like_button_<%= deed.id %>">
+  <% like = user_likes[deed.id] %>
+  <% if like %>
+    <%= button_to like_path(like), method: :delete,
+      class: "btn btn-danger btn-sm" do %>
+      ♥ <%= deed.likes.size %>
+    <% end %>
+  <% else %>
+    <%= button_to likes_path(good_deed_id: deed.id), method: :post,
+      class: "btn btn-outline-danger btn-sm" do %>
+      ♡ <%= deed.likes.size %>
+    <% end %>
+  <% end %>
+</span>

@@ -2,12 +2,12 @@ require "test_helper"
 
 class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
   test "should get new" do
-    get good_deeds_new_url
-    assert_response :success
+    get new_good_deed_path
+    assert_response :redirect
   end
 
-  test "should get create" do
-    get good_deeds_create_url
-    assert_response :success
+  test "should get index" do
+    get good_deeds_path
+    assert_response :redirect
   end
 end

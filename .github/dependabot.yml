@@ -3,10 +3,25 @@ updates:
 - package-ecosystem: bundler
   directory: "/"
   schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+    interval: weekly
+  open-pull-requests-limit: 5
+  groups:
+    minor-and-patch:
+      update-types:
+      - minor
+      - patch
+  ignore:
+  # Rails 8 系への移行は app:update / load_defaults の対応が必要なため、
+  # 専用のタスクとして別途扱う。着手する際はこの ignore を外す。
+  - dependency-name: rails
+    update-types:
+    - version-update:semver-major
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
-    interval: daily
-  open-pull-requests-limit: 10
+    interval: monthly
+  open-pull-requests-limit: 5
+  groups:
+    actions:
+      patterns:
+      - "*"

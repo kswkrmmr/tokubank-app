@@ -40,10 +40,4 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected.size, contents.size
     assert_equal expected.sort, contents.sort
   end
-
-  private
-
-  def log_in_as(user)
-    post login_path, params: { email: user.email, password: "password" }
-  end
 end

@@ -1,6 +1,6 @@
 <span id="like_button_<%= deed.id %>">
   <% like = user_likes[deed.id] %>
-  <% if like %>
+  <% if like&.persisted? %>
     <%= button_to like_path(like), method: :delete,
       class: "btn btn-danger btn-sm" do %>
       ♥ <%= deed.likes.size %>

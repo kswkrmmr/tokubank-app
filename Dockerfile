@@ -3,7 +3,6 @@ FROM ruby:3.2
 WORKDIR /app
 
 ENV RAILS_ENV=production
-ENV SECRET_KEY_BASE=dummy
 
 RUN apt-get update -qq && apt-get install -y \
   build-essential \
@@ -29,7 +28,9 @@ RUN cp app/assets/builds/application.css public/application.css
 RUN ls -la public
 RUN head -n 20 public/application.css || true
 
-RUN bundle exec rails assets:precompile
+# precompile 時だけダミー鍵を使う。ENV にすると実行時まで残り、
+# 既知の鍵でセッション Cookie が署名されてしまうため、この RUN に限定する。
+RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 EXPOSE 3000
 

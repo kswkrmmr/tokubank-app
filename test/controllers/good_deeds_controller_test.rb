@@ -69,4 +69,20 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".card-body div", text: /by #{other.name}/
     assert_select "#like_button_#{deed.id}"
   end
+
+  # config.i18n.raise_on_missing_translations が有効なので、
+  # 各画面を描画するだけで未定義の翻訳キーを検知できる
+  test "main pages render without missing translations" do
+    [ root_path, login_path, new_user_path ].each do |path|
+      get path
+      assert_response :success, "#{path} が描画できない"
+    end
+
+    log_in_as(users(:one))
+
+    [ good_deeds_path, all_good_deeds_path, new_good_deed_path ].each do |path|
+      get path
+      assert_response :success, "#{path} が描画できない"
+    end
+  end
 end

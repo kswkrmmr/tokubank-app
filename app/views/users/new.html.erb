@@ -5,7 +5,7 @@
     <div class="col-md-8 col-lg-5 mx-auto">
       <div class="card shadow-sm">
         <div class="card-body p-4">
-          <h1 class="card-title h4 mb-4 text-center"><%= I18n.t('users.new.title') %></h1>
+          <h1 class="card-title h4 mb-4 text-center"><%= t('users.new.title') %></h1>
           <%= form_with model: @user, local: true do |f| %>
             <div class="mb-3">
               <%= f.label :name, class: "form-label" %>

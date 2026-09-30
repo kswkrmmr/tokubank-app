@@ -10,7 +10,7 @@
       <div>
         <span class="text-muted small"><%= deed.performed_on %></span>
         <% if show_author %>
-          <span class="text-muted small ms-2">by <%= deed.user.name %></span>
+          <span class="text-muted small ms-2"><%= t('good_deed.author', name: deed.user.name) %></span>
         <% end %>
       </div>
       <%= yield %>

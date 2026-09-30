@@ -7,31 +7,36 @@ ja:
     label:
       email: メールアドレス
       password: パスワード
+  # app/views/kaminari/ のテンプレートが参照する。
+  # kaminari gem は en のみ同梱しており ja が無いため、ここで定義する。
+  # テンプレート側が raw で出力するため HTML エンティティを使える。
+  views:
+    pagination:
+      first: "&laquo; 最初"
+      last: "最後 &raquo;"
+      previous: "&lsaquo; 前"
+      next: "次 &rsaquo;"
+      truncate: "&hellip;"
   defaults:
-    create: 作成
-    post: 投稿
     delete_confirm: 削除しますか？
     flash_message:
-      created: "%{item}を作成しました"
-      not_created: "%{item}を作成出来ませんでした"
-      updated: "%{item}を更新しました"
-      not_updated: "%{item}を更新出来ませんでした"
-      deleted: "%{item}を削除しました"
       require_login: ログインしてください
   header:
     login: ログイン
     logout: ログアウト
-    board: 掲示板
-    board_index: 掲示板一覧
-    create_board: 掲示板作成
-    bookmark_index: ブックマーク一覧
-    profile: プロフィール
+    sign_up: 新規登録
+    new_good_deed: 徳を積む
+    good_deeds: 積み重ねた徳
+    all_good_deeds: みんなの徳
+  static_pages:
+    top:
+      login: ログイン
+      sign_up: 登録
   user_sessions:
     new:
       title: ログイン
       login: ログイン
       to_register_page: 登録ページへ
-      password_forget: パスワードをお忘れの方はこちら
     create:
       success: ログインしました
       failure: ログインに失敗しました
@@ -45,12 +50,22 @@ ja:
       success: ユーザー登録が完了しました
       failure: ユーザー登録に失敗しました
   good_deed:
+    author: "by %{name}"
     new:
       title: あなたの善行教えてください
     index:
       title: 徳を積む
-    edit:
-      title: 掲示板編集
+      total_points: 合計徳ポイント
+      today_points: 今日の徳ポイント
+      today_empty: 今日はまだ徳を積んでいません
+      empty: まだ徳を積んでいないようです
+      delete: 削除
+    all:
+      title: みんなの徳
+      total_points: みんなの合計徳ポイント
+      today_points: 今日のみんなの徳ポイント
+      today_empty: 今日はまだ誰も徳を積んでいません
+      empty: まだ誰も徳を積んでいないようです
     create:
       success: ありがとうございます！良い行いをしましたね。
       failure: 登録に失敗しました

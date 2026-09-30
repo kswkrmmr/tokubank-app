@@ -75,14 +75,8 @@ jobs:
           node-version-file: .node-version
           cache: yarn
 
-      - name: Install JavaScript dependencies
-        run: yarn install --frozen-lockfile
-
-      # system テストは実ブラウザで Turbo と Bootstrap の JS を動かすため、
-      # app/assets/builds/ を用意しておく必要がある（gitignore 対象）
-      - name: Build assets
-        run: yarn build && yarn build:css
-
+      # yarn install と yarn build は jsbundling-rails / cssbundling-rails が
+      # test:prepare に紐付けて実行するため、ここでは行わない
       - name: Run tests
         env:
           RAILS_ENV: test

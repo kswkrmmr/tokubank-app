@@ -70,6 +70,43 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "#like_button_#{deed.id}"
   end
 
+  test "destroying own deed redirects with a success flash" do
+    user = users(:one)
+    deed = user.good_deeds.create!(content: "消す徳", performed_on: Date.new(2026, 5, 3), points: 1)
+
+    log_in_as(user)
+    assert_difference "GoodDeed.count", -1 do
+      delete good_deed_path(deed)
+    end
+
+    assert_redirected_to good_deeds_path
+    follow_redirect!
+    assert_select ".alert.alert-success", text: /削除しました/
+  end
+
+  test "cannot destroy another user's deed" do
+    deed = good_deeds(:two)
+
+    log_in_as(users(:one))
+    assert_no_difference "GoodDeed.count" do
+      delete good_deed_path(deed)
+    end
+
+    assert_redirected_to good_deeds_path
+    follow_redirect!
+    assert_select ".alert.alert-danger", text: /権限がありません/
+  end
+
+  test "points summary is shown even on a page beyond the last one" do
+    log_in_as(users(:one))
+    get good_deeds_path(page: 99)
+
+    assert_response :success
+    assert_select "h5", text: "合計徳ポイント"
+    assert_select ".card-body strong", count: 0
+    assert_select "div", text: "まだ徳を積んでいないようです"
+  end
+
   # config.i18n.raise_on_missing_translations が有効なので、
   # 各画面を描画するだけで未定義の翻訳キーを検知できる
   test "main pages render without missing translations" do

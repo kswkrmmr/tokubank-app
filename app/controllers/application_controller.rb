@@ -7,6 +7,11 @@ class ApplicationController < ActionController::Base
 
   add_flash_types :success, :danger
 
+  private
+
+  # public にするとすべてのコントローラの public メソッド、
+  # つまり潜在的なアクションになるため private に置く。
+  # ビューからは helper_method 経由で参照する。
   def logged_in?
     !!current_user
   end
@@ -19,8 +24,6 @@ class ApplicationController < ActionController::Base
   def current_user
     @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
-
-  private
 
   def require_login
     redirect_to login_path, danger: t("defaults.flash_message.require_login") unless logged_in?

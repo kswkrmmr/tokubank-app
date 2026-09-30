@@ -31,11 +31,15 @@ class GoodDeedsController < ApplicationController
   end
 
   def destroy
-    @good_deed = GoodDeed.find(params[:id])
-    unless current_user.own?(@good_deed)
-      redirect_to good_deeds_path, danger: t("good_deed.destroy.unauthorized")
+    # 自分の徳に限定して引く。見つからない場合は「存在しない」と
+    # 「他人の徳」を区別せず、権限エラーとして扱う。
+    @good_deed = current_user.good_deeds.find_by(id: params[:id])
+
+    if @good_deed.nil?
+      redirect_to good_deeds_path, status: :see_other, danger: t("good_deed.destroy.unauthorized")
       return
     end
+
     @good_deed.destroy
     redirect_to good_deeds_path, status: :see_other, success: t("good_deed.destroy.success")
   end

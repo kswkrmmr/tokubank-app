@@ -1,15 +1,15 @@
-<% content_for(:title, "みんなの徳") %>
+<% content_for(:title, t('good_deed.all.title')) %>
 <div class="container pt-3">
   <div class="row">
     <div class="col-12">
       <div class="row">
         <% if @good_deeds.present? %>
           <%= render "good_deeds/points_summary",
-                total_label: "みんなの合計徳ポイント",
+                total_label: t('good_deed.all.total_points'),
                 total_points: @total_points,
-                today_label: "今日のみんなの徳ポイント",
+                today_label: t('good_deed.all.today_points'),
                 today_points: @today_points,
-                today_empty_message: "今日はまだ誰も徳を積んでいません" %>
+                today_empty_message: t('good_deed.all.today_empty') %>
 
           <% @good_deeds.each do |deed| %>
             <%= render layout: "good_deeds/deed_card", locals: { deed: deed, show_author: true } do %>
@@ -21,7 +21,7 @@
             <%= paginate @good_deeds %>
           </div>
         <% else %>
-          <div class="mb-3">まだ誰も徳を積んでいないようです</div>
+          <div class="mb-3"><%= t('good_deed.all.empty') %></div>
         <% end %>
       </div>
     </div>

@@ -16,19 +16,19 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto me-4 main-nav align-items-center gap-2">
         <li class="nav-item">
-          <%= link_to " 徳を積む", new_good_deed_path, class: "btn btn-outline-light" %>
+          <%= link_to t('header.new_good_deed'), new_good_deed_path, class: "btn btn-outline-light" %>
         </li>
 
         <li class="nav-item">
-          <%= link_to "積み重ねた徳", good_deeds_path, class: "btn btn-outline-light" %>
+          <%= link_to t('header.good_deeds'), good_deeds_path, class: "btn btn-outline-light" %>
         </li>
 
         <li class="nav-item">
-          <%= link_to "みんなの徳", all_good_deeds_path, class: "btn btn-outline-light" %>
+          <%= link_to t('header.all_good_deeds'), all_good_deeds_path, class: "btn btn-outline-light" %>
         </li>
 
         <li class="nav-item">
-          <%= button_to "ログアウト", logout_path, method: :delete, class: "btn btn-outline-light" %>
+          <%= button_to t('header.logout'), logout_path, method: :delete, class: "btn btn-outline-light" %>
         </li>
       </ul>
     </div>

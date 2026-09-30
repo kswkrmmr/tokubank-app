@@ -5,16 +5,16 @@
       <div class="row">
         <% if @good_deeds.present? %>
           <%= render "good_deeds/points_summary",
-                total_label: "合計徳ポイント",
+                total_label: t('good_deed.index.total_points'),
                 total_points: @total_points,
-                today_label: "今日の徳ポイント",
+                today_label: t('good_deed.index.today_points'),
                 today_points: @today_points,
-                today_empty_message: "今日はまだ徳を積んでいません" %>
+                today_empty_message: t('good_deed.index.today_empty') %>
 
           <% @good_deeds.each do |deed| %>
             <%= render layout: "good_deeds/deed_card", locals: { deed: deed, show_author: false } do %>
-              <%= button_to "削除", good_deed_path(deed), method: :delete,
-                data: { turbo_confirm: "削除しますか？" },
+              <%= button_to t('good_deed.index.delete'), good_deed_path(deed), method: :delete,
+                data: { turbo_confirm: t('defaults.delete_confirm') },
                 class: "btn btn-danger btn-sm" %>
             <% end %>
           <% end %>
@@ -23,7 +23,7 @@
             <%= paginate @good_deeds %>
           </div>
         <% else %>
-          <div class="mb-3">まだ徳を積んでいないようです</div>
+          <div class="mb-3"><%= t('good_deed.index.empty') %></div>
         <% end %>
       </div>
     </div>

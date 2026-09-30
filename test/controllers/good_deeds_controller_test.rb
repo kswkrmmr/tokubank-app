@@ -40,4 +40,33 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal expected.size, contents.size
     assert_equal expected.sort, contents.sort
   end
+
+  test "index renders each deed with a delete button and without the author" do
+    user = users(:one)
+    deed = user.good_deeds.create!(content: "自分の徳", performed_on: Date.new(2026, 5, 3), points: 2)
+
+    log_in_as(user)
+    get good_deeds_path
+
+    assert_response :success
+    assert_select "h5", text: "合計徳ポイント"
+    assert_select ".card-body strong", text: "自分の徳"
+    assert_select "form[action=?]", good_deed_path(deed)
+    assert_select ".card-body div", text: /by/, count: 0
+  end
+
+  test "all renders deeds from other users with the author and a like button" do
+    other = users(:two)
+    deed = other.good_deeds.create!(content: "他人の徳", performed_on: Date.new(2026, 5, 3), points: 3)
+
+    log_in_as(users(:one))
+    get all_good_deeds_path
+
+    assert_response :success
+    assert_select "title", text: /みんなの徳/
+    assert_select "h5", text: "みんなの合計徳ポイント"
+    assert_select ".card-body strong", text: "他人の徳"
+    assert_select ".card-body div", text: /by #{other.name}/
+    assert_select "#like_button_#{deed.id}"
+  end
 end

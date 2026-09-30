@@ -1,46 +1,20 @@
+<% content_for(:title, "みんなの徳") %>
 <div class="container pt-3">
   <div class="row">
     <div class="col-12">
       <div class="row">
         <% if @good_deeds.present? %>
-
-          <div class="row text-center mb-4">
-            <div class="col">
-              <div class="card shadow-sm p-3">
-                <h5>みんなの合計徳ポイント</h5>
-                <h2 class="text-success"><%= @total_points %> pt</h2>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card shadow-sm p-3">
-                <h5>今日のみんなの徳ポイント</h5>
-                <% if @today_points > 0 %>
-                  <h2 class="text-success"><%= @today_points %> pt</h2>
-                <% else %>
-                  <p class="text-muted">今日はまだ誰も徳を積んでいません</p>
-                <% end %>
-              </div>
-            </div>
-          </div>
+          <%= render "good_deeds/points_summary",
+                total_label: "みんなの合計徳ポイント",
+                total_points: @total_points,
+                today_label: "今日のみんなの徳ポイント",
+                today_points: @today_points,
+                today_empty_message: "今日はまだ誰も徳を積んでいません" %>
 
           <% @good_deeds.each do |deed| %>
-            <div class="card mb-3 shadow-sm">
-              <div class="card-body">
-                <div class="d-flex justify-content-between">
-                  <strong><%= deed.content %></strong>
-                  <span class="text-success"><%= deed.points %> pt</span>
-                </div>
-
-                <div class="d-flex justify-content-between align-items-center mt-2">
-                  <div>
-                    <span class="text-muted small"><%= deed.performed_on %></span>
-                    <span class="text-muted small ms-2">by <%= deed.user.name %></span>
-                  </div>
-                  <%= render "likes/like_button", deed: deed, user_likes: @user_likes %>
-                </div>
-              </div>
-            </div>
+            <%= render layout: "good_deeds/deed_card", locals: { deed: deed, show_author: true } do %>
+              <%= render "likes/like_button", deed: deed, user_likes: @user_likes %>
+            <% end %>
           <% end %>
 
           <div class="d-flex justify-content-center mt-3">

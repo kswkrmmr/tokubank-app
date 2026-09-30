@@ -1,4 +1,4 @@
-FROM ruby:3.2
+FROM ruby:3.2.3
 
 WORKDIR /app
 
@@ -19,15 +19,8 @@ RUN yarn install
 
 COPY . .
 
-RUN echo "🔥 START CSS BUILD"
-RUN yarn build:css
-RUN echo "🔥 END CSS BUILD"
-
-RUN cp app/assets/builds/application.css public/application.css
-
-RUN ls -la public
-RUN head -n 20 public/application.css || true
-
+# jsbundling-rails / cssbundling-rails が assets:precompile に
+# yarn build / yarn build:css を紐付けているため、個別の実行は不要。
 # precompile 時だけダミー鍵を使う。ENV にすると実行時まで残り、
 # 既知の鍵でセッション Cookie が署名されてしまうため、この RUN に限定する。
 RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile

@@ -3,14 +3,15 @@
   <div class="row">
     <div class="col-12">
       <div class="row">
-        <% if @good_deeds.present? %>
-          <%= render "good_deeds/points_summary",
-                total_label: t('good_deed.all.total_points'),
-                total_points: @total_points,
-                today_label: t('good_deed.all.today_points'),
-                today_points: @today_points,
-                today_empty_message: t('good_deed.all.today_empty') %>
+        <%# ポイントは一覧の有無と無関係に出す（範囲外のページでも消えないように） %>
+        <%= render "good_deeds/points_summary",
+              total_label: t('good_deed.all.total_points'),
+              total_points: @total_points,
+              today_label: t('good_deed.all.today_points'),
+              today_points: @today_points,
+              today_empty_message: t('good_deed.all.today_empty') %>
 
+        <% if @good_deeds.present? %>
           <% @good_deeds.each do |deed| %>
             <%= render layout: "good_deeds/deed_card", locals: { deed: deed, show_author: true } do %>
               <%= render "likes/like_button", deed: deed, user_likes: @user_likes %>

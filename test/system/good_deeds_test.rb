@@ -8,6 +8,7 @@ class GoodDeedsTest < ApplicationSystemTestCase
 
     visit new_good_deed_path
     assert_selector "h1", text: "あなたの善行教えてください"
+    wait_for_turbo
 
     fill_in "good_deed_content", with: "電車で席を譲った"
     fill_in "good_deed_performed_on", with: Date.new(2026, 5, 3)
@@ -27,6 +28,7 @@ class GoodDeedsTest < ApplicationSystemTestCase
   test "shows validation errors when the form is incomplete" do
     log_in_as(@user)
     visit new_good_deed_path
+    wait_for_turbo
 
     click_button "登録"
 

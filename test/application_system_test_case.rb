@@ -49,12 +49,18 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     !page.evaluate_script("window.__pageMark")
   end
 
-  # ページの読み込みと Turbo の初期化が終わるまで待つ。
-  # 初期化前に button_to のボタンを押すと送信が飛ばないことがある。
+  # ページが操作可能になるまで待つ。
+  #
+  # Turbo Drive は再訪時にキャッシュのプレビューを先に描画し、その後で
+  # 本来のレスポンスに差し替える。プレビューに対して入力やクリックを行うと、
+  # 差し替えで入力値が消え、要素が切り離されてクリックが失われる。
+  # プレビュー表示中は <html> に data-turbo-preview が付くので、それが
+  # 外れるまで待つ。
   def wait_for_turbo
     Timeout.timeout(Capybara.default_max_wait_time) do
       until page.evaluate_script("document.readyState") == "complete" &&
-            page.evaluate_script("typeof window.Turbo !== 'undefined'")
+            page.evaluate_script("typeof window.Turbo !== 'undefined'") &&
+            !page.evaluate_script("document.documentElement.hasAttribute('data-turbo-preview')")
         sleep 0.05
       end
     end

@@ -2,7 +2,33 @@ require "test_helper"
 require "timeout"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
+  # 手元のコンテナ（Dockerfile.test）では Debian の chromium を使う。
+  # CI は環境変数を設定しないため、従来どおり Selenium Manager に任せる。
+  Selenium::WebDriver::Chrome.path = ENV["CHROME_BIN"] if ENV["CHROME_BIN"]
+  Selenium::WebDriver::Chrome::Service.driver_path = ENV["CHROMEDRIVER_BIN"] if ENV["CHROMEDRIVER_BIN"]
+
+  driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ] do |options|
+    # コンテナでは root で動くため sandbox を無効にする必要がある
+    if ENV["CHROME_BIN"]
+      options.add_argument("--no-sandbox")
+      options.add_argument("--disable-dev-shm-usage")
+    end
+
+    # 失敗時にブラウザのコンソールログを取得するために必要
+    options.add_option("goog:loggingPrefs", { browser: "ALL" })
+  end
+
+  # 失敗したときに原因を追えるよう、スクリーンショットに加えて
+  # HTML とブラウザのコンソールログを残す。
+  # CI はこのディレクトリをまるごと artifact として保存している。
+  #
+  # teardown ではセッションが既に破棄されており HTML が空になるため、
+  # Rails がスクリーンショットを撮るのと同じ after_teardown で、
+  # かつ super より前に実行する。
+  def after_teardown
+    save_failure_artifacts unless passed?
+    super
+  end
 
   # 既定は 2 秒。CI では初回リクエストが eager_load を伴って遅くなるため、
   # 遷移の完了を待ちきれずに失敗することがあった。
@@ -40,13 +66,36 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     click_button button
   end
 
-  # ページ全体が再読み込み・差し替えされたかを判定するための目印
+  # ページが差し替えられたかを判定するための目印。
+  #
+  # window に置くと、Turbo が <body> を差し替えても window は生き残るため
+  # フルリロードしか検出できない（実際にそれで誤った診断をした）。
+  # DOM 側に置いて、body の差し替えも検出できるようにする。
   def mark_page
-    page.execute_script("window.__pageMark = true")
+    page.execute_script("document.body.dataset.testMark = '1'")
   end
 
   def page_replaced?
-    !page.evaluate_script("window.__pageMark")
+    page.evaluate_script("document.body.dataset.testMark") != "1"
+  end
+
+  def save_failure_artifacts
+    dir = Rails.root.join("tmp/screenshots")
+    FileUtils.mkdir_p(dir)
+    base = dir.join("failures_#{method_name}")
+
+    File.write("#{base}.html", page.html)
+    logs = browser_console_logs
+    File.write("#{base}.console.log", logs.join("\n")) if logs.any?
+  rescue StandardError => e
+    # ブラウザが落ちている場合などは取得できない。テストの失敗を隠さない。
+    warn "失敗時の情報を保存できなかった: #{e.class}: #{e.message}"
+  end
+
+  def browser_console_logs
+    page.driver.browser.logs.get(:browser).map(&:to_s)
+  rescue StandardError => e
+    [ "コンソールログの取得に失敗: #{e.class}" ]
   end
 
   # ページが操作可能になるまで待つ。

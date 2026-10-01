@@ -1,0 +1,28 @@
+# system テストを手元で実行するためのイメージ。
+#
+# CI は google-chrome-stable（x86_64）を使うが、Apple Silicon 向けには
+# 提供されていないため、ここでは Debian の chromium を使う。
+# 環境が完全に一致するわけではないので、CI の代わりではなく
+# 手元で素早く反復するための環境と位置づける。
+FROM ruby:3.4.11
+
+ENV LANG=C.UTF-8
+ENV TZ=Asia/Tokyo
+
+RUN apt-get update -qq \
+ && apt-get install -y --no-install-recommends \
+      build-essential \
+      libpq-dev \
+      chromium \
+      chromium-driver \
+      nodejs \
+      npm \
+ && npm install -g yarn \
+ && rm -rf /var/lib/apt/lists/*
+
+# ApplicationSystemTestCase がこの2つを見てドライバを構成する。
+# 未設定なら従来どおり Selenium Manager に任せる（CI はこちら）。
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_BIN=/usr/bin/chromedriver
+
+WORKDIR /myapp

@@ -8,6 +8,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # 統合テストの log_in_as と違い、実際にログイン画面を操作する。
   def log_in_as(user, password: "password")
     visit login_path
+    wait_for_turbo
     fill_in "email", with: user.email
     fill_in "password", with: password
     click_button "ログイン"

@@ -4,25 +4,63 @@ require "timeout"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
 
+  # 既定は 2 秒。CI では初回リクエストが eager_load を伴って遅くなるため、
+  # 遷移の完了を待ちきれずに失敗することがあった。
+  Capybara.default_max_wait_time = 10
+
   # フィクスチャのユーザーはいずれもパスワードが "password"。
   # 統合テストの log_in_as と違い、実際にログイン画面を操作する。
   def log_in_as(user, password: "password")
     visit login_path
-    fill_in "email", with: user.email
-    fill_in "password", with: password
-    click_button "ログイン"
+    wait_for_turbo
+
+    fill_in_and_submit("ログイン", email: user.email, password: password)
 
     assert_text "ログインしました"
     wait_for_turbo
   end
 
-  # Turbo の読み込みが終わる前に button_to のボタンを押すと、送信が
-  # どこにも飛ばずに握り潰されることがある（リクエストがサーバに届かない）。
-  # JS の挙動に依存する操作の前に呼ぶ。
+  # 入力した直後にページが差し替わり、値が消えた状態で送信されることがある
+  # （CI の失敗時スクリーンショットで全フィールドが空になっていた）。
+  # 値が残っていることを確認してから送信し、消えていれば入れ直す。
+  def fill_in_and_submit(button, fields)
+    mark_page
+
+    2.times do |attempt|
+      fields.each { |name, value| fill_in name.to_s, with: value }
+      # date フィールドに Date を渡した場合も比較できるよう文字列に揃える
+      break if fields.all? { |name, value| page.has_field?(name.to_s, with: value.to_s, wait: 1) }
+
+      flunk <<~MSG if attempt == 1
+        入力が保持されない。ページが差し替わった形跡: #{page_replaced? ? "あり" : "なし"}
+        現在の URL: #{page.current_url}
+      MSG
+    end
+
+    click_button button
+  end
+
+  # ページ全体が再読み込み・差し替えされたかを判定するための目印
+  def mark_page
+    page.execute_script("window.__pageMark = true")
+  end
+
+  def page_replaced?
+    !page.evaluate_script("window.__pageMark")
+  end
+
+  # ページが操作可能になるまで待つ。
+  #
+  # Turbo Drive は再訪時にキャッシュのプレビューを先に描画し、その後で
+  # 本来のレスポンスに差し替える。プレビューに対して入力やクリックを行うと、
+  # 差し替えで入力値が消え、要素が切り離されてクリックが失われる。
+  # プレビュー表示中は <html> に data-turbo-preview が付くので、それが
+  # 外れるまで待つ。
   def wait_for_turbo
     Timeout.timeout(Capybara.default_max_wait_time) do
       until page.evaluate_script("document.readyState") == "complete" &&
-            page.evaluate_script("typeof window.Turbo !== 'undefined'")
+            page.evaluate_script("typeof window.Turbo !== 'undefined'") &&
+            !page.evaluate_script("document.documentElement.hasAttribute('data-turbo-preview')")
         sleep 0.05
       end
     end

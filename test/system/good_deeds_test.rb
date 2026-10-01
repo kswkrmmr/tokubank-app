@@ -10,15 +10,10 @@ class GoodDeedsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "あなたの善行教えてください"
     wait_for_turbo
 
-    fill_in "good_deed_content", with: "電車で席を譲った"
-    fill_in "good_deed_performed_on", with: Date.new(2026, 5, 3)
-    fill_in "good_deed_points", with: "5"
-
-    # Turbo の描画と入力が競合していないことを確かめてから送信する
-    assert_field "good_deed_content", with: "電車で席を譲った"
-    assert_field "good_deed_points", with: "5"
-
-    click_button "登録"
+    fill_in_and_submit("登録",
+      good_deed_content: "電車で席を譲った",
+      good_deed_performed_on: Date.new(2026, 5, 3),
+      good_deed_points: "5")
 
     assert_text "ありがとうございます"
     assert_text "電車で席を譲った"
@@ -39,6 +34,7 @@ class GoodDeedsTest < ApplicationSystemTestCase
   test "deletes a deed after accepting the confirmation dialog" do
     @user.good_deeds.create!(content: "消す徳", performed_on: Date.new(2026, 5, 3), points: 1)
     log_in_as(@user)
+    wait_for_turbo
 
     accept_confirm do
       find(".card-body", text: "消す徳").click_button "削除"
@@ -51,6 +47,7 @@ class GoodDeedsTest < ApplicationSystemTestCase
   test "keeps the deed when the confirmation dialog is dismissed" do
     @user.good_deeds.create!(content: "消す徳", performed_on: Date.new(2026, 5, 3), points: 1)
     log_in_as(@user)
+    wait_for_turbo
 
     dismiss_confirm do
       find(".card-body", text: "消す徳").click_button "削除"
@@ -65,6 +62,9 @@ class GoodDeedsTest < ApplicationSystemTestCase
 
     click_on "みんなの徳"
     assert_selector "h5", exact_text: "みんなの合計徳ポイント"
+    # アサーションがプレビューに対して通ることがあるため、
+    # 次のクリックの前に本来の描画への差し替えを待つ
+    wait_for_turbo
 
     click_on "積み重ねた徳"
     # 「みんなの合計徳ポイント」の部分一致で通ってしまわないよう完全一致で見る

@@ -3,6 +3,7 @@ require "application_system_test_case"
 class AuthenticationTest < ApplicationSystemTestCase
   test "signs up and logs in with a differently cased email" do
     visit new_user_path
+    wait_for_turbo
 
     fill_in "user_name", with: "テスト太郎"
     fill_in "user_email", with: "Taro@Example.com"
@@ -14,6 +15,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
     # 登録時に大文字が含まれていても、入力の大小文字に関係なくログインできる
     visit login_path
+    wait_for_turbo
     fill_in "email", with: "TARO@example.com"
     fill_in "password", with: "password"
     click_button "ログイン"
@@ -24,6 +26,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test "shows an error for a wrong password without leaving the form" do
     visit login_path
+    wait_for_turbo
 
     fill_in "email", with: users(:one).email
     fill_in "password", with: "wrongpassword"

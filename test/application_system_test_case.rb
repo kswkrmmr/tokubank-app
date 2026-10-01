@@ -4,10 +4,15 @@ require "timeout"
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :selenium, using: :headless_chrome, screen_size: [ 1400, 1400 ]
 
+  # 既定は 2 秒。CI では初回リクエストが eager_load を伴って遅くなるため、
+  # 遷移の完了を待ちきれずに失敗することがあった。
+  Capybara.default_max_wait_time = 10
+
   # フィクスチャのユーザーはいずれもパスワードが "password"。
   # 統合テストの log_in_as と違い、実際にログイン画面を操作する。
   def log_in_as(user, password: "password")
     visit login_path
+    wait_for_turbo
     fill_in "email", with: user.email
     fill_in "password", with: password
     click_button "ログイン"
@@ -16,9 +21,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     wait_for_turbo
   end
 
-  # Turbo の読み込みが終わる前に button_to のボタンを押すと、送信が
-  # どこにも飛ばずに握り潰されることがある（リクエストがサーバに届かない）。
-  # JS の挙動に依存する操作の前に呼ぶ。
+  # ページの読み込みと Turbo の初期化が終わるまで待つ。
+  # 初期化前に button_to のボタンを押すと送信が飛ばないことがある。
   def wait_for_turbo
     Timeout.timeout(Capybara.default_max_wait_time) do
       until page.evaluate_script("document.readyState") == "complete" &&

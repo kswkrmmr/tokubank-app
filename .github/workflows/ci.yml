@@ -69,6 +69,14 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: yarn
+
+      # yarn install と yarn build は jsbundling-rails / cssbundling-rails が
+      # test:prepare に紐付けて実行するため、ここでは行わない
       - name: Run tests
         env:
           RAILS_ENV: test

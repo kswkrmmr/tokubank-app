@@ -13,12 +13,40 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   def log_in_as(user, password: "password")
     visit login_path
     wait_for_turbo
-    fill_in "email", with: user.email
-    fill_in "password", with: password
-    click_button "ログイン"
+
+    fill_in_and_submit("ログイン", email: user.email, password: password)
 
     assert_text "ログインしました"
     wait_for_turbo
+  end
+
+  # 入力した直後にページが差し替わり、値が消えた状態で送信されることがある
+  # （CI の失敗時スクリーンショットで全フィールドが空になっていた）。
+  # 値が残っていることを確認してから送信し、消えていれば入れ直す。
+  def fill_in_and_submit(button, fields)
+    mark_page
+
+    2.times do |attempt|
+      fields.each { |name, value| fill_in name.to_s, with: value }
+      # date フィールドに Date を渡した場合も比較できるよう文字列に揃える
+      break if fields.all? { |name, value| page.has_field?(name.to_s, with: value.to_s, wait: 1) }
+
+      flunk <<~MSG if attempt == 1
+        入力が保持されない。ページが差し替わった形跡: #{page_replaced? ? "あり" : "なし"}
+        現在の URL: #{page.current_url}
+      MSG
+    end
+
+    click_button button
+  end
+
+  # ページ全体が再読み込み・差し替えされたかを判定するための目印
+  def mark_page
+    page.execute_script("window.__pageMark = true")
+  end
+
+  def page_replaced?
+    !page.evaluate_script("window.__pageMark")
   end
 
   # ページの読み込みと Turbo の初期化が終わるまで待つ。

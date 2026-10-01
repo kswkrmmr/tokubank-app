@@ -10,15 +10,10 @@ class GoodDeedsTest < ApplicationSystemTestCase
     assert_selector "h1", text: "あなたの善行教えてください"
     wait_for_turbo
 
-    fill_in "good_deed_content", with: "電車で席を譲った"
-    fill_in "good_deed_performed_on", with: Date.new(2026, 5, 3)
-    fill_in "good_deed_points", with: "5"
-
-    # Turbo の描画と入力が競合していないことを確かめてから送信する
-    assert_field "good_deed_content", with: "電車で席を譲った"
-    assert_field "good_deed_points", with: "5"
-
-    click_button "登録"
+    fill_in_and_submit("登録",
+      good_deed_content: "電車で席を譲った",
+      good_deed_performed_on: Date.new(2026, 5, 3),
+      good_deed_points: "5")
 
     assert_text "ありがとうございます"
     assert_text "電車で席を譲った"

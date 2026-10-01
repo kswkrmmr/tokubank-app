@@ -27,4 +27,20 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       end
     end
   end
+
+  # 以降の操作で CSP 違反が起きたら記録する。
+  # 読み込み時点の違反は拾えないので、そちらは
+  # スタイルシートや JS が実際に読み込まれたかで確認する。
+  def record_csp_violations
+    page.execute_script(<<~JS)
+      window.__cspViolations = [];
+      document.addEventListener("securitypolicyviolation", (event) => {
+        window.__cspViolations.push(event.violatedDirective + " " + (event.blockedURI || event.sourceFile));
+      });
+    JS
+  end
+
+  def csp_violations
+    page.evaluate_script("window.__cspViolations || []")
+  end
 end

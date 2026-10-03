@@ -17,7 +17,7 @@
 
 ## 技術スタック
 - Ruby on Rails 8.1 / Ruby 3.4
-- PostgreSQL
+- PostgreSQL 17（Neon）
 - Bootstrap 5
 - Docker / Render
 
@@ -42,7 +42,7 @@ docker volume create tokubank-bundle
 
 # PostgreSQL を起動
 docker run -d --name tb-pg --network tb-net \
-  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres:16
+  -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres postgres:17
 
 # テスト（system テストを含む）
 docker run --rm --network tb-net \
@@ -68,3 +68,12 @@ docker run --rm --network tb-net \
 - **`public/assets` に古いプリコンパイル済みアセットが残っていると、test 環境ではそちらが配信される。** JS や CSS の変更が反映されないときは `rm -rf public/assets` する
 - **gem を更新したら `bundle lock --add-checksums` を実行する。** コンテナ（arm64）で取得したチェックサムしか記録されず、CI（x86_64）の `bundle install` が frozen モードで失敗する
 - 手元は Chromium（arm64）、CI は google-chrome-stable（x86_64）。バージョンは揃えているが環境は完全には一致しない
+- PostgreSQL のバージョンは**本番（Neon）・CI・compose の3つを揃える**。`image: postgres` のように未指定だと CI だけ勝手に新しいメジャー版に上がる
+
+### 本番のリージョン
+
+**Render の Web サービスと Neon のリージョンは必ず揃える。** 現在はどちらも Ohio (US East)。
+
+別リージョンだと DB との往復が1クエリあたり約200msになり、クエリを8往復するいいねの処理で2.4秒かかっていた（同一リージョンなら1〜5ms）。サービスを作り直すときは注意する。
+
+Render はサービス作成後にリージョンを変更できないため、食い違った場合はどちらかを作り直すことになる。

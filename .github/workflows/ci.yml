@@ -42,7 +42,9 @@ jobs:
 
     services:
       postgres:
-        image: postgres
+        # 本番（Neon）が PostgreSQL 17。未指定だと latest を拾い、
+        # 新しいメジャー版が出たときに CI だけ勝手に上がって食い違う。
+        image: postgres:17
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres

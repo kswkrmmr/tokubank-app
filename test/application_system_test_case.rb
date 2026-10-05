@@ -50,8 +50,6 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # （CI の失敗時スクリーンショットで全フィールドが空になっていた）。
   # 値が残っていることを確認してから送信し、消えていれば入れ直す。
   def fill_in_and_submit(button, fields)
-    mark_page
-
     2.times do |attempt|
       fields.each { |name, value| fill_in name.to_s, with: value }
       # date フィールドに Date を渡した場合も比較できるよう文字列に揃える
@@ -113,6 +111,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
         sleep 0.05
       end
     end
+
+    # 待ち終えた時点で目印を置く。失敗時の HTML に data-test-mark が
+    # 残っていなければ、その後に body が差し替わったと分かる。
+    mark_page
   end
 
   # 以降の操作で CSP 違反が起きたら記録する。

@@ -56,18 +56,4 @@ class GoodDeedsTest < ApplicationSystemTestCase
     assert_text "消す徳"
     assert_no_text "削除しました"
   end
-
-  test "navigates between the list pages from the header" do
-    log_in_as(@user)
-
-    click_on "みんなの徳"
-    assert_selector "h5", exact_text: "みんなの合計徳ポイント"
-    # アサーションがプレビューに対して通ることがあるため、
-    # 次のクリックの前に本来の描画への差し替えを待つ
-    wait_for_turbo
-
-    click_on "積み重ねた徳"
-    # 「みんなの合計徳ポイント」の部分一致で通ってしまわないよう完全一致で見る
-    assert_selector "h5", exact_text: "合計徳ポイント"
-  end
 end

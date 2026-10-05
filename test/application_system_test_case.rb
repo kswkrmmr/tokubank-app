@@ -1,5 +1,21 @@
 require "test_helper"
 require "timeout"
+require "minitest/retry"
+
+# CI でまれにブラウザが操作（入力・クリック）を取りこぼし、system テストが
+# 落ちることがある。原因は未特定で、手元では通算28回試しても再現しない。
+#
+# 本物の回帰は決定論的に失敗するため、再実行しても2回とも落ちて検知できる。
+# 取りこぼしだけが救われる。再実行が起きたことはログに出るので、発生頻度を
+# 観測できる。
+#
+# classes_to_retry は ancestors を見るため、ApplicationSystemTestCase を
+# 継承した system テストにのみ適用され、通常のテストには影響しない。
+Minitest::Retry.use!(
+  retry_count: 1,
+  verbose: true,
+  classes_to_retry: [ "ApplicationSystemTestCase" ]
+)
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   # 手元のコンテナ（Dockerfile.test）では Debian の chromium を使う。

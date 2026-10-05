@@ -16,6 +16,14 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
     # 失敗時にブラウザのコンソールログを取得するために必要
     options.add_option("goog:loggingPrefs", { browser: "ALL" })
+
+    # Chrome のパスワードマネージャがログインフォームを解析し、入力した値を
+    # 消してしまうことがある（CI の失敗時に両方のフィールドが空になり、
+    # コンソールに password 関連の DOM 警告が繰り返し記録されていた）。
+    options.add_preference("credentials_enable_service", false)
+    options.add_preference("profile.password_manager_enabled", false)
+    options.add_preference("autofill.profile_enabled", false)
+    options.add_argument("--disable-save-password-bubble")
   end
 
   # 失敗したときに原因を追えるよう、スクリーンショットに加えて

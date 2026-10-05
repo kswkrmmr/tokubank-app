@@ -107,6 +107,32 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "div", text: "まだ徳を積んでいないようです"
   end
 
+  # ヘッダーのリンクの行き先はブラウザを起動しなくても確認できる。
+  # 以前は system テストで実際にクリックして遷移を見ていたが、
+  # クリックが稀に失われて CI が不安定になるため、この層に移した。
+  test "header links point to the right pages when logged in" do
+    log_in_as(users(:one))
+
+    [ good_deeds_path, all_good_deeds_path, new_good_deed_path ].each do |path|
+      get path
+
+      assert_response :success
+      assert_select "header a[href=?]", new_good_deed_path, text: "徳を積む"
+      assert_select "header a[href=?]", good_deeds_path, text: "積み重ねた徳"
+      assert_select "header a[href=?]", all_good_deeds_path, text: "みんなの徳"
+      assert_select "header form[action=?]", logout_path
+    end
+  end
+
+  test "header shows the login links when logged out" do
+    get root_path
+
+    assert_response :success
+    assert_select "header a[href=?]", login_path, text: "ログイン"
+    assert_select "header a[href=?]", new_user_path, text: "新規登録"
+    assert_select "header a[href=?]", good_deeds_path, count: 0
+  end
+
   # config.i18n.raise_on_missing_translations が有効なので、
   # 各画面を描画するだけで未定義の翻訳キーを検知できる
   test "main pages render without missing translations" do

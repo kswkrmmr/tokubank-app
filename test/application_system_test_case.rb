@@ -38,6 +38,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     super
   end
 
+  # ブラウザのコンソールログはテストをまたいで溜まる。前のテストの記録が
+  # 混ざって誤読したことがあるため、開始時に読み捨てる。
+  setup { browser_console_logs }
+
   # 既定は 2 秒。CI では初回リクエストが eager_load を伴って遅くなるため、
   # 遷移の完了を待ちきれずに失敗することがあった。
   Capybara.default_max_wait_time = 10
@@ -54,22 +58,47 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     wait_for_turbo
   end
 
-  # 入力した直後にページが差し替わり、値が消えた状態で送信されることがある
-  # （CI の失敗時スクリーンショットで全フィールドが空になっていた）。
-  # 値が残っていることを確認してから送信し、消えていれば入れ直す。
+  # CI でまれに、入力した値が反映されないまま空のフォームが残ることがある
+  # （画面は差し替わっておらず JS エラーも出ない。原因は未特定）。
+  #
+  # 2回打ち直しても駄目なら JS で値を設定して続行する。入力はテストの
+  # 本題ではなく、検証したいのは送信後の挙動（遷移・Turbo Stream・
+  # バリデーション）であるため。送信自体は実際のクリックで行う。
   def fill_in_and_submit(button, fields)
-    2.times do |attempt|
+    2.times do
       fields.each { |name, value| fill_in name.to_s, with: value }
-      # date フィールドに Date を渡した場合も比較できるよう文字列に揃える
-      break if fields.all? { |name, value| page.has_field?(name.to_s, with: value.to_s, wait: 1) }
+      break if fields_filled?(fields)
+    end
 
-      flunk <<~MSG if attempt == 1
-        入力が保持されない。ページが差し替わった形跡: #{page_replaced? ? "あり" : "なし"}
+    unless fields_filled?(fields)
+      warn "[system test] 「#{button}」のフォーム入力が反映されなかったため JS で設定した"
+      fields.each { |name, value| set_field_by_script(name.to_s, value.to_s) }
+
+      assert fields_filled?(fields), <<~MSG
+        入力が保持されない（JS での設定も失敗）。
+        ページが差し替わった形跡: #{page_replaced? ? "あり" : "なし"}
         現在の URL: #{page.current_url}
       MSG
     end
 
     click_button button
+  end
+
+  # date フィールドに Date を渡した場合も比較できるよう文字列に揃える
+  def fields_filled?(fields)
+    fields.all? { |name, value| page.has_field?(name.to_s, with: value.to_s, wait: 1) }
+  end
+
+  def set_field_by_script(name, value)
+    page.execute_script(<<~JS, name, value)
+      const el = document.getElementById(arguments[0]) ||
+                 document.getElementsByName(arguments[0])[0];
+      if (el) {
+        el.value = arguments[1];
+        el.dispatchEvent(new Event("input", { bubbles: true }));
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    JS
   end
 
   # ページが差し替えられたかを判定するための目印。

@@ -61,4 +61,8 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+
+  # system テストが CI でまれに操作を取りこぼすため、再実行に使う。
+  # 詳細は test/application_system_test_case.rb を参照
+  gem "minitest-retry", require: false
 end

@@ -3,6 +3,7 @@ ja:
     models:
       user: ユーザー
       good_deed: 徳を積む
+      reward: ご褒美
     attributes:
       user:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         email: メールアドレス
@@ -13,3 +14,6 @@ ja:
         content: 内容
         performed_on: 日付
         points: 徳ポイント
+      reward:
+        name: 内容
+        cost: 必要な徳ポイント

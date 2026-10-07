@@ -13,9 +13,25 @@ class User < ApplicationRecord
 
   has_many :good_deeds, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :rewards, dependent: :destroy
 
   def own?(object)
     id == object&.user_id
+  end
+
+  # 積んだ徳の合計
+  def total_points
+    good_deeds.sum(:points)
+  end
+
+  # 叶えたご褒美で使った合計
+  def spent_points
+    rewards.redeemed.sum(:cost)
+  end
+
+  # 使える残高。徳を削除すると負になることがある
+  def available_points
+    total_points - spent_points
   end
 
   private

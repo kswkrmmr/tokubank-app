@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     get :all, on: :collection
   end
   resources :likes, only: %i[ create destroy ]
+  resources :rewards, only: %i[ index new create destroy ]
   get "login", to: "user_sessions#new"
   post "login", to: "user_sessions#create"
   delete "logout", to: "user_sessions#destroy"

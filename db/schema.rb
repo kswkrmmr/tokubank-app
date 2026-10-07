@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_09_29_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_07_000001) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "good_deeds", force: :cascade do |t|
     t.text "content", null: false
@@ -34,6 +34,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_29_000001) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "rewards", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "cost", null: false
+    t.datetime "redeemed_at"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "redeemed_at"], name: "index_rewards_on_user_id_and_redeemed_at"
+    t.index ["user_id"], name: "index_rewards_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.string "password_digest", null: false
@@ -46,4 +57,5 @@ ActiveRecord::Schema[7.2].define(version: 2026_09_29_000001) do
   add_foreign_key "good_deeds", "users"
   add_foreign_key "likes", "good_deeds"
   add_foreign_key "likes", "users"
+  add_foreign_key "rewards", "users"
 end

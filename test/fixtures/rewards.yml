@@ -1,0 +1,15 @@
+pending_one:
+  name: 映画を見る
+  cost: 500
+  user: one
+
+redeemed_one:
+  name: ケーキを買う
+  cost: 300
+  redeemed_at: 2026-10-01 10:00:00
+  user: one
+
+other_user:
+  name: 他ユーザーのご褒美
+  cost: 100
+  user: two

@@ -48,6 +48,32 @@ class UserTest < ActiveSupport::TestCase
     assert user.valid?
   end
 
+  test "total_points sums the points of the user's deeds" do
+    user = users(:one)
+    user.good_deeds.create!(content: "追加の徳", performed_on: Date.new(2026, 5, 3), points: 10)
+
+    assert_equal user.good_deeds.sum(:points), user.total_points
+  end
+
+  test "spent_points only counts redeemed rewards" do
+    # fixture: pending 500 / redeemed 300
+    assert_equal 300, users(:one).spent_points
+  end
+
+  test "available_points is the total minus what has been spent" do
+    user = users(:one)
+
+    assert_equal user.total_points - 300, user.available_points
+  end
+
+  # 徳を削除すると残高は負になりうる。許容する仕様
+  test "available_points can go negative" do
+    user = users(:one)
+    user.good_deeds.destroy_all
+
+    assert_equal(-300, user.available_points)
+  end
+
   test "own? tells whether the record belongs to the user" do
     assert users(:one).own?(good_deeds(:one))
     assert_not users(:one).own?(good_deeds(:two))

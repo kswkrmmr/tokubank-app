@@ -70,6 +70,26 @@ docker run --rm --network tb-net \
 - 手元は Chromium（arm64）、CI は google-chrome-stable（x86_64）。バージョンは揃えているが環境は完全には一致しない
 - PostgreSQL のバージョンは**本番（Neon）・CI・compose の3つを揃える**。`image: postgres` のように未指定だと CI だけ勝手に新しいメジャー版に上がる
 
+### デプロイ
+
+マイグレーションは `Dockerfile` の `CMD` で、サーバー起動前に実行する。
+
+```dockerfile
+CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]
+```
+
+**Render の Docker Command（Settings）は空にしておくこと。** 設定すると Dockerfile の `CMD` が上書きされ、マイグレーションが実行されなくなる。
+
+実際にこれで事故を起こしている。ご褒美機能を追加した際、Docker Command に `bundle exec rails server -b 0.0.0.0 -p $PORT` が設定されていたため `rewards` テーブルが作られず、本番だけ 500 になった。ダッシュボードの設定は差分に現れないので気づきにくい。
+
+ポートは `${PORT:-3000}` で実行環境の指定に従う。決め打ちにすると、ホスティング側で起動コマンドを上書きする必要が生じ、同じ問題を繰り返す。
+
+デプロイ後はログに以下が出ることを確認する。
+
+```
+== 20261007000001 CreateRewards: migrating ====
+```
+
 ### 本番のリージョン
 
 **Render の Web サービスと Neon のリージョンは必ず揃える。** 現在はどちらも Ohio (US East)。

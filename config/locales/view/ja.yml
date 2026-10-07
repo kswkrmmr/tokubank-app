@@ -28,6 +28,7 @@ ja:
     new_good_deed: 徳を積む
     good_deeds: 積み重ねた徳
     all_good_deeds: みんなの徳
+    rewards: ご褒美
   static_pages:
     top:
       login: ログイン
@@ -72,3 +73,22 @@ ja:
     destroy:
       success: 削除しました
       unauthorized: 権限がありません
+  reward:
+    index:
+      title: ご褒美
+      new: ご褒美を登録する
+      pending: まだ叶えていないご褒美
+      pending_empty: まだご褒美を登録していません
+      redeemed: 叶えたご褒美
+      redeemed_empty: まだ叶えたご褒美はありません
+      redeemed_on: "%{date} に叶えました"
+      delete: 削除
+    new:
+      title: ご褒美を登録する
+    create:
+      success: ご褒美を登録しました
+      failure: 登録に失敗しました
+    destroy:
+      success: 削除しました
+      unauthorized: 権限がありません
+      redeemed: 叶えたご褒美は削除できません

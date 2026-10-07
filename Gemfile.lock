@@ -84,7 +84,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.26.0)
       msgpack (~> 1.5)
-    brakeman (8.0.6)
+    brakeman (8.1.0)
       racc
     builder (3.3.0)
     capybara (3.40.0)
@@ -187,13 +187,13 @@ GEM
     parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
-    pg (1.6.3)
-    pg (1.6.3-aarch64-linux)
-    pg (1.6.3-aarch64-linux-musl)
-    pg (1.6.3-arm64-darwin)
-    pg (1.6.3-x86_64-darwin)
-    pg (1.6.3-x86_64-linux)
-    pg (1.6.3-x86_64-linux-musl)
+    pg (1.7.0)
+    pg (1.7.0-aarch64-linux)
+    pg (1.7.0-aarch64-linux-musl)
+    pg (1.7.0-arm64-darwin)
+    pg (1.7.0-x86_64-darwin)
+    pg (1.7.0-x86_64-linux)
+    pg (1.7.0-x86_64-linux-musl)
     pp (0.6.4)
       prettyprint
     prettyprint (0.2.0)
@@ -257,7 +257,6 @@ GEM
     regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
-    rexml (3.4.4)
     rubocop (1.86.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -289,10 +288,9 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (3.7.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.44.0)
+    selenium-webdriver (4.50.0)
       base64 (~> 0.2)
       logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     sprockets (4.2.2)
@@ -353,7 +351,7 @@ DEPENDENCIES
   jsbundling-rails
   kaminari
   minitest-retry
-  pg (~> 1.1)
+  pg (~> 1.7)
   puma (>= 5.0)
   rails (~> 8.1.4)
   rails-i18n (~> 8.1)
@@ -385,7 +383,7 @@ CHECKSUMS
   bigdecimal (4.1.3) sha256=61ebe1e5e559bdc3cc6f2c0ee7f427321fc838f59611c294356eb04d6e21cf66
   bindex (0.8.1) sha256=7b1ecc9dc539ed8bccfc8cb4d2732046227b09d6f37582ff12e50a5047ceb17e
   bootsnap (1.26.0) sha256=ca96237015e6cd74a02963d5821cf00ac5ea134653b323e8cd6d702a7718bf1b
-  brakeman (8.0.6) sha256=759cc69341115e6c2dcd47b6fd8649a0b9bd540e3585ac8a0a94e31c66fee386
+  brakeman (8.1.0) sha256=cfa9e5214e4925842f4bc849a64f8a7e6c5d0425fe98eac8d7b7bc60fdc17e07
   builder (3.3.0) sha256=497918d2f9dca528fdca4b88d84e4ef4387256d984b8154e9d5d3fe5a9c8835f
   bundler (4.0.21) sha256=7cbf5499b426076aa16c8d28a59e4c2c3aad5a438402abcd961f0119f29f1dd0
   capybara (3.40.0) sha256=42dba720578ea1ca65fd7a41d163dd368502c191804558f6e0f71b391054aeef
@@ -435,13 +433,13 @@ CHECKSUMS
   nokogiri (1.19.4-x86_64-linux-musl) sha256=17dfb7c1fa194ae02fbf7c51a7afc8d278045ab3fdacfd86f91d02d7b274470b
   parallel (1.28.0) sha256=33e6de1484baf2524792d178b0913fc8eb94c628d6cfe45599ad4458c638c970
   parser (3.3.11.1) sha256=d17ace7aabe3e72c3cc94043714be27cc6f852f104d81aa284c2281aecc65d54
-  pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
-  pg (1.6.3-aarch64-linux) sha256=0698ad563e02383c27510b76bf7d4cd2de19cd1d16a5013f375dd473e4be72ea
-  pg (1.6.3-aarch64-linux-musl) sha256=06a75f4ea04b05140146f2a10550b8e0d9f006a79cdaf8b5b130cde40e3ecc2c
-  pg (1.6.3-arm64-darwin) sha256=7240330b572e6355d7c75a7de535edb5dfcbd6295d9c7777df4d9dddfb8c0e5f
-  pg (1.6.3-x86_64-darwin) sha256=ee2e04a17c0627225054ffeb43e31a95be9d7e93abda2737ea3ce4a62f2729d6
-  pg (1.6.3-x86_64-linux) sha256=5d9e188c8f7a0295d162b7b88a768d8452a899977d44f3274d1946d67920ae8d
-  pg (1.6.3-x86_64-linux-musl) sha256=9c9c90d98c72f78eb04c0f55e9618fe55d1512128e411035fe229ff427864009
+  pg (1.7.0) sha256=f7b536501284e883d4c9ef86dbde0313063e4aaafc23575b0017b0d572a26afb
+  pg (1.7.0-aarch64-linux) sha256=101dd3a261000eb64b03ff41a5890674b735b626dbdce88652969b59fb0b1157
+  pg (1.7.0-aarch64-linux-musl) sha256=5ca4d4619a1a39fb22de47350130956ece69cf0512858ee68dca926e46f65e4a
+  pg (1.7.0-arm64-darwin) sha256=9fa895bbe28bdd579b83ccc80464c01d1015ea7549a7919134c9f8f10c060e4b
+  pg (1.7.0-x86_64-darwin) sha256=7b726ba6eab8b143fb803d3b4173b0a3e4b0b032025032212f90d436785022db
+  pg (1.7.0-x86_64-linux) sha256=d0a24f448b3c874c8b2658d4efbbbefce7315c228ede84f6f6f42089d1d704b6
+  pg (1.7.0-x86_64-linux-musl) sha256=0c9bc93b6e0aca2a5b07daef00b7ec4f9882bfe21ef3872b4371f8ecffe1f1e1
   pp (0.6.4) sha256=dfcb0fce700c41456265922884f9fe195d7fbb0674a3578e6c0f69588e82b570
   prettyprint (0.2.0) sha256=2bc9e15581a94742064a3cc8b0fb9d45aae3d03a1baa6ef80922627a0766f193
   prism (1.9.0) sha256=7b530c6a9f92c24300014919c9dcbc055bf4cdf51ec30aed099b06cd6674ef85
@@ -463,7 +461,6 @@ CHECKSUMS
   rdoc (8.1.0) sha256=befc37880a5cfd36dcb176c748b5fd5ee39dd3536a75e81824e4972ce230f60a
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
   reline (0.7.0) sha256=5b012d8e55dbf9d450f12bde2cf7d15ff546ae80b3f8f3b30e570d431815583d
-  rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
   rubocop (1.86.1) sha256=44415f3f01d01a21e01132248d2fd0867572475b566ca188a0a42133a08d4531
   rubocop-ast (1.49.1) sha256=4412f3ee70f6fe4546cc489548e0f6fcf76cafcfa80fa03af67098ffed755035
   rubocop-performance (1.26.1) sha256=cd19b936ff196df85829d264b522fd4f98b6c89ad271fa52744a8c11b8f71834
@@ -472,7 +469,7 @@ CHECKSUMS
   ruby-progressbar (1.13.0) sha256=80fc9c47a9b640d6834e0dc7b3c94c9df37f08cb072b7761e4a71e22cff29b33
   rubyzip (3.7.0) sha256=65c19294da75297a939006f3516deacc33185fbd721ff1954f7a231db6d3e121
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  selenium-webdriver (4.44.0) sha256=6f1df072529af369589c46f0e01132952aabb250cfd683c274d74dc1eb5d8477
+  selenium-webdriver (4.50.0) sha256=d12f94025bc33af44428ed6b8def4896a7bb9c4521212579241650d6cb060fcb
   sprockets (4.2.2) sha256=761e5a49f1c288704763f73139763564c845a8f856d52fba013458f8af1b59b1
   sprockets-rails (3.5.2) sha256=a9e88e6ce9f8c912d349aa5401509165ec42326baf9e942a85de4b76dbc4119e
   stimulus-rails (1.3.4) sha256=765676ffa1f33af64ce026d26b48e8ffb2e0b94e0f50e9119e11d6107d67cb06

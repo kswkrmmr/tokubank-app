@@ -5,6 +5,8 @@
       <div class="row">
         <%# ポイントは一覧の有無と無関係に出す（範囲外のページでも消えないように） %>
         <%= render "good_deeds/points_summary",
+              available_label: t('good_deed.index.available_points'),
+              available_points: @available_points,
               total_label: t('good_deed.index.total_points'),
               total_points: @total_points,
               today_label: t('good_deed.index.today_points'),

@@ -107,6 +107,26 @@ class GoodDeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "div", text: "まだ徳を積んでいないようです"
   end
 
+  test "index shows the available balance alongside the total" do
+    log_in_as(users(:one))
+    get good_deeds_path
+
+    assert_response :success
+    assert_select "h5", text: "使える徳ポイント"
+    assert_select "h5", text: "合計徳ポイント"
+    assert_select "h5", text: "今日の徳ポイント"
+  end
+
+  # みんなの徳は全ユーザーの集計なので残高の概念がない
+  test "all does not show the available balance" do
+    log_in_as(users(:one))
+    get all_good_deeds_path
+
+    assert_response :success
+    assert_select "h5", text: "使える徳ポイント", count: 0
+    assert_select "h5", text: "みんなの合計徳ポイント"
+  end
+
   # ヘッダーのリンクの行き先はブラウザを起動しなくても確認できる。
   # 以前は system テストで実際にクリックして遷移を見ていたが、
   # クリックが稀に失われて CI が不安定になるため、この層に移した。

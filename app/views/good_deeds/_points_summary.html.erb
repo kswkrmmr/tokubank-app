@@ -1,4 +1,16 @@
+<%# available_points は任意。みんなの徳は全ユーザーの集計なので残高の概念がない %>
 <div class="row text-center mb-4">
+  <% if local_assigns.key?(:available_points) %>
+    <div class="col">
+      <div class="card shadow-sm p-3">
+        <h5><%= available_label %></h5>
+        <h2 class="<%= available_points.negative? ? 'text-danger' : 'text-success' %>">
+          <%= available_points %> pt
+        </h2>
+      </div>
+    </div>
+  <% end %>
+
   <div class="col">
     <div class="card shadow-sm p-3">
       <h5><%= total_label %></h5>

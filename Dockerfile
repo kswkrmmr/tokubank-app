@@ -27,4 +27,7 @@ RUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails assets:precompile
 
 EXPOSE 3000
 
-CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p 3000"]
+# ポートは実行環境が指定する（Render は $PORT を渡す）。決め打ちにすると
+# ホスティング側で起動コマンドを上書きする必要が生じ、ここに書いた
+# db:migrate が実行されなくなる。
+CMD ["bash", "-c", "bundle exec rails db:migrate && bundle exec rails server -b 0.0.0.0 -p ${PORT:-3000}"]

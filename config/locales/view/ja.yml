@@ -56,6 +56,7 @@ ja:
       title: あなたの善行教えてください
     index:
       title: 徳を積む
+      available_points: 使える徳ポイント
       total_points: 合計徳ポイント
       today_points: 今日の徳ポイント
       today_empty: 今日はまだ徳を積んでいません
@@ -83,11 +84,20 @@ ja:
       redeemed_empty: まだ叶えたご褒美はありません
       redeemed_on: "%{date} に叶えました"
       delete: 削除
+      available: 使える徳ポイント
+      redeem: 叶える
+      redeem_confirm: "%{name} を叶えますか？徳ポイントを消費し、取り消せません"
+      shortfall: "あと %{points} pt"
     new:
       title: ご褒美を登録する
     create:
       success: ご褒美を登録しました
       failure: 登録に失敗しました
+    redeem:
+      success: "%{name} を叶えました！おめでとうございます"
+      insufficient: 徳ポイントが足りません
+      already_redeemed: すでに叶えています
+      unauthorized: 権限がありません
     destroy:
       success: 削除しました
       unauthorized: 権限がありません

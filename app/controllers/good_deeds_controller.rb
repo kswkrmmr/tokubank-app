@@ -5,6 +5,7 @@ class GoodDeedsController < ApplicationController
     @good_deeds = deeds.order(performed_on: :desc, id: :desc).page(params[:page]).per(20)
     @total_points = deeds.sum(:points)
     @today_points = deeds.where(performed_on: Time.zone.today).sum(:points)
+    @available_points = current_user.available_points
   end
 
   def all
